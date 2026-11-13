@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -32,11 +31,6 @@ class AiController extends Controller
             ], 500);
         }
 
-        // Full Gemini endpoint: host + API version + model + action
-        // in the controller
-        $model = config('services.gemini.model');
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent";
-
         // 2. Construct the AI Prompt
         $prompt = "You are an expert e-commerce SEO copywriter. Write a highly converting, SEO-optimized product description based on the following details. Do not include conversational filler like 'Here is your description', just output the description itself.\n\n";
         $prompt .= 'Product Name: '.$validated['product_name']."\n";
@@ -49,64 +43,137 @@ class AiController extends Controller
         $prompt .= 'Tone of Voice: '.$tone."\n";
         $prompt .= 'Format: Return the output in clean, plain text with short paragraphs. Keep it under 150 words.';
 
-        // 3. Make the API Call to Gemini
-        try {
-            $response = Http::retry(
-                3,
-                fn (int $attempt) => $attempt * 500,
-                fn (\Throwable $exception) => $exception instanceof ConnectionException
-                    || ($exception instanceof RequestException
-                        && in_array($exception->response->status(), [429, 500, 502, 503, 504], true)),
-                throw: false,
-            )->withHeaders([
-                'x-goog-api-key' => $apiKey,
-                'Content-Type' => 'application/json',
-            ])->post($url, [
-                'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => $prompt],
-                        ],
-                    ],
-                ],
+        // 3. Try the configured model first, then any configured fallbacks.
+        // The Interactions API is used because it is Google's recommended
+        // interface and answers reliably when the legacy generateContent
+        // endpoint hangs for the mainline models.
+        $models = $this->descriptionModels();
+        $deadline = now()->addSeconds(25);
+        $lastStatus = null;
+        $lastError = null;
+
+        foreach ($models as $model) {
+            if (now()->greaterThan($deadline)) {
+                Log::warning('Gemini description generation ran out of time.', ['model' => $model]);
+
+                break;
+            }
+
+            try {
+                $response = Http::connectTimeout(5)
+                    ->timeout(12)
+                    ->withHeaders([
+                        'x-goog-api-key' => $apiKey,
+                        'Content-Type' => 'application/json',
+                    ])
+                    ->post(self::API_URL.'/interactions', [
+                        'model' => $model,
+                        'store' => false,
+                        'input' => $prompt,
+                    ]);
+            } catch (ConnectionException $e) {
+                Log::warning('Gemini description generation timed out.', [
+                    'model' => $model,
+                    'error' => $e->getMessage(),
+                ]);
+                $lastStatus = null;
+                $lastError = $e->getMessage();
+
+                continue;
+            } catch (\Exception $e) {
+                Log::error('Gemini description connection exception: '.$e->getMessage(), ['model' => $model]);
+                $lastStatus = null;
+                $lastError = $e->getMessage();
+
+                continue;
+            }
+
+            if ($response->failed()) {
+                $lastStatus = $response->status();
+                $lastError = $response->json() ?? $response->body();
+
+                Log::warning('Gemini description generation failed.', [
+                    'model' => $model,
+                    'status' => $lastStatus,
+                    'response' => $lastError,
+                ]);
+
+                continue;
+            }
+
+            $generatedText = $this->interactionText($response->json());
+
+            if ($generatedText === '') {
+                Log::warning('Gemini returned an empty description response.', [
+                    'model' => $model,
+                    'response' => $response->json(),
+                ]);
+                $lastStatus = 502;
+                $lastError = $response->json();
+
+                continue;
+            }
+
+            return response()->json([
+                'description' => trim($generatedText),
             ]);
-        } catch (\Exception $e) {
-            Log::error('Gemini Connection Exception: '.$e->getMessage());
-
-            return response()->json([
-                'message' => 'Failed to connect to AI service.',
-                'debug_error' => config('app.debug') ? $e->getMessage() : null,
-            ], 500);
         }
 
-        if ($response->failed()) {
-            Log::error('Gemini API Error: '.$response->body());
-            $message = in_array($response->status(), [429, 503], true)
-                ? 'The AI service is temporarily busy. Please try again in a moment.'
-                : 'Failed to connect to AI service.';
-
-            return response()->json([
-                'message' => $message,
-                'debug_error' => config('app.debug') ? ($response->json() ?? $response->body()) : null,
-            ], $response->status());
-        }
-
-        // 4. Parse the Response
-        $data = $response->json();
-        $generatedText = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
-
-        if (empty($generatedText)) {
-            Log::warning('Gemini returned an empty response.', ['response' => $data]);
-
-            return response()->json([
-                'message' => 'AI returned an empty response.',
-                'debug_error' => config('app.debug') ? $data : null,
-            ], 500);
-        }
+        // 4. Every model failed — report the most useful error we have.
+        $busy = $lastStatus === null || in_array($lastStatus, [429, 500, 502, 503, 504], true);
+        $message = match (true) {
+            $lastStatus === 429 => 'The AI service is temporarily over its rate limit. Please try again in a moment.',
+            $busy => 'The AI service is temporarily busy. Please try again in a moment.',
+            default => 'Failed to generate a product description.',
+        };
+        $statusCode = $lastStatus === 429 ? 429 : ($busy ? 503 : ($lastStatus >= 400 ? $lastStatus : 502));
 
         return response()->json([
-            'description' => trim($generatedText),
-        ]);
+            'message' => $message,
+            'debug_error' => config('app.debug') ? $lastError : null,
+        ], $statusCode);
+    }
+
+    /**
+     * The configured description model followed by its fallbacks, de-duplicated.
+     *
+     * @return array<int, string>
+     */
+    private function descriptionModels(): array
+    {
+        $fallbacks = config('services.gemini.fallback_models', []);
+        $fallbacks = is_array($fallbacks) ? $fallbacks : explode(',', (string) $fallbacks);
+
+        return array_values(array_unique(array_filter(array_map(
+            fn ($model) => trim((string) $model),
+            array_merge([config('services.gemini.model')], $fallbacks),
+        ))));
+    }
+
+    /**
+     * Pull the model's text out of an Interactions API response.
+     */
+    private function interactionText(mixed $data): string
+    {
+        if (! is_array($data)) {
+            return '';
+        }
+
+        $text = collect($data['steps'] ?? [])
+            ->where('type', 'model_output')
+            ->flatMap(fn (array $step) => $step['content'] ?? [])
+            ->where('type', 'text')
+            ->pluck('text')
+            ->filter(fn ($part) => is_string($part) && $part !== '')
+            ->join('');
+
+        if ($text !== '') {
+            return $text;
+        }
+
+        $outputText = $data['output_text'] ?? '';
+
+        return is_string($outputText) ? $outputText : '';
     }
 
     public function generateProductImage(Request $request)

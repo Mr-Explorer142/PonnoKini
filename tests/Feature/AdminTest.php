@@ -248,22 +248,51 @@ it('generates product images with the configured Gemini image model', function (
         && str_contains($request['input'][0]['text'], 'Blue ceramic mug'));
 });
 
-it('retries temporary Gemini description generation failures', function () {
+it('generates product descriptions with the Gemini interactions API', function () {
     $admin = User::factory()->create()->assignRole('admin');
     Sanctum::actingAs($admin);
     config([
         'services.gemini.key' => 'test-key',
         'services.gemini.model' => 'gemini-3.8-flash',
+        'services.gemini.fallback_models' => [],
     ]);
 
     Http::fake([
-        'generativelanguage.googleapis.com/v1beta/models/*:generateContent' => Http::sequence()
-            ->push(['error' => ['code' => 503]], 503)
+        'generativelanguage.googleapis.com/v1beta/interactions' => Http::response([
+            'steps' => [[
+                'type' => 'model_output',
+                'content' => [['type' => 'text', 'text' => 'A durable everyday product.']],
+            ]],
+        ]),
+    ]);
+
+    $this->postJson('/api/ai/generate-description', [
+        'product_name' => 'Everyday bag',
+        'features' => 'Lightweight and durable',
+    ])->assertOk()
+        ->assertJsonPath('description', 'A durable everyday product.');
+
+    Http::assertSent(fn (ClientRequest $request) => $request->url() === 'https://generativelanguage.googleapis.com/v1beta/interactions'
+        && $request['model'] === 'gemini-3.8-flash'
+        && str_contains($request['input'], 'Everyday bag'));
+});
+
+it('falls back to another Gemini model when the configured model is unavailable', function () {
+    $admin = User::factory()->create()->assignRole('admin');
+    Sanctum::actingAs($admin);
+    config([
+        'services.gemini.key' => 'test-key',
+        'services.gemini.model' => 'gemini-3.8-flash',
+        'services.gemini.fallback_models' => ['gemini-3.5-flash-lite', 'gemini-4-hydrogen'],
+    ]);
+
+    Http::fake([
+        'generativelanguage.googleapis.com/v1beta/interactions' => Http::sequence()
+            ->push(['error' => ['code' => 503, 'message' => 'High demand']], 503)
             ->push([
-                'candidates' => [[
-                    'content' => [
-                        'parts' => [['text' => 'A durable everyday product.']],
-                    ],
+                'steps' => [[
+                    'type' => 'model_output',
+                    'content' => [['type' => 'text', 'text' => 'A durable everyday product.']],
                 ]],
             ]),
     ]);
@@ -274,7 +303,32 @@ it('retries temporary Gemini description generation failures', function () {
     ])->assertOk()
         ->assertJsonPath('description', 'A durable everyday product.');
 
-    Http::assertSentCount(2);
+    $requests = Http::recorded();
+    expect($requests)->toHaveCount(2);
+    expect($requests[0][0]['model'])->toBe('gemini-3.8-flash');
+    expect($requests[1][0]['model'])->toBe('gemini-3.5-flash-lite');
+});
+
+it('reports a clear error when every Gemini description model is unavailable', function () {
+    $admin = User::factory()->create()->assignRole('admin');
+    Sanctum::actingAs($admin);
+    config([
+        'services.gemini.key' => 'test-key',
+        'services.gemini.model' => 'gemini-3.8-flash',
+        'services.gemini.fallback_models' => ['gemini-3.5-flash-lite'],
+    ]);
+
+    Http::fake([
+        'generativelanguage.googleapis.com/v1beta/interactions' => Http::response(
+            ['error' => ['code' => 503, 'message' => 'High demand']],
+            503,
+        ),
+    ]);
+
+    $this->postJson('/api/ai/generate-description', [
+        'product_name' => 'Everyday bag',
+    ])->assertStatus(503)
+        ->assertJsonPath('message', 'The AI service is temporarily busy. Please try again in a moment.');
 });
 
 it('allows admins to remove the current product image', function () {
