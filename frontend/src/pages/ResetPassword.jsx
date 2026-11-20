@@ -64,7 +64,7 @@ export default function ResetPassword() {
     // Opened without a valid link
     if (!token || !email) {
         return (
-            <Card className="mx-auto mt-10 w-full max-w-md border-orange-200">
+            <Card className="mx-auto mt-10 w-full max-w-md border-border">
                 <CardHeader>
                     <CardTitle className="text-2xl">
                         {t("Invalid reset link")}
@@ -83,7 +83,7 @@ export default function ResetPassword() {
     }
 
     return (
-        <Card className="mx-auto mt-10 w-full max-w-md border-orange-200">
+            <Card className="mx-auto mt-10 w-full max-w-md border-border">
             <CardHeader>
                 <CardTitle className="text-2xl">{t("Reset password")}</CardTitle>
                 <CardDescription>
@@ -94,7 +94,7 @@ export default function ResetPassword() {
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {error && (
-                        <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
+                            <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
                             {t(error)}{" "}
                             {error.toLowerCase().includes("token") && (
                                 <Link

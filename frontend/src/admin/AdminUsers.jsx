@@ -348,7 +348,7 @@ export default function AdminUsers() {
                         className="h-10 pl-9"
                     />
                 </label>
-                <button type="submit" className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/80">
+                <button type="submit" className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary-hover">
                     Search
                 </button>
             </form>
@@ -402,7 +402,7 @@ export default function AdminUsers() {
                                             </td>
                                             <td className="px-4 py-3">
                                                 {user.email_verified_at ? (
-                                                    <span className="text-green-700 dark:text-green-400">Verified</span>
+                                                    <span className="text-success">Verified</span>
                                                 ) : (
                                                     <span className="text-amber-700 dark:text-amber-400">Unverified</span>
                                                 )}

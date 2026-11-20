@@ -153,7 +153,7 @@ export default function VerifyEmail() {
                                 </p>
                             )}
                             {message && (
-                                <p className="rounded-md bg-green-500/10 px-3 py-2 text-sm text-green-700 dark:text-green-400">
+                                <p className="rounded-md bg-success/10 px-3 py-2 text-sm text-success">
                                     {t(message)}
                                 </p>
                             )}

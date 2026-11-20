@@ -639,7 +639,7 @@ export default function AdminOrders() {
                                 </div>
                             ))}
                             {Number(selected.discount_amount) > 0 && (
-                                <div className="flex justify-between text-sm text-green-700 dark:text-green-400">
+                                <div className="flex justify-between text-sm text-success">
                                     <span>Discount</span>
                                     <span>-{formatPrice(selected.discount_amount)}</span>
                                 </div>

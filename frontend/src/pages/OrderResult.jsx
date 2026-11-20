@@ -89,7 +89,7 @@ export default function OrderResult() {
             <div className="rounded-2xl border border-border bg-card p-6 text-center sm:p-10">
                 {paid ? (
                     <>
-                        <CheckCircle2 className="mx-auto size-14 text-green-600" />
+                        <CheckCircle2 className="mx-auto size-14 text-success" />
                         <h1 className="mt-4 text-3xl font-bold">
                             {t("Thank you for your order!")}
                         </h1>
@@ -135,7 +135,7 @@ export default function OrderResult() {
                     </>
                 ) : codOrder ? (
                     <>
-                        <CheckCircle2 className="mx-auto size-14 text-green-600" />
+                        <CheckCircle2 className="mx-auto size-14 text-success" />
                         <h1 className="mt-4 text-3xl font-bold">
                             {t("Your order has been placed")}
                         </h1>

@@ -462,7 +462,7 @@ export default function Profile() {
                                 variant="outline"
                                 className={
                                     isVerified
-                                        ? "border-green-300 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+                                        ? "border-success/30 bg-success/10 text-success"
                                         : "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300"
                                 }
                             >
@@ -478,7 +478,7 @@ export default function Profile() {
                     role={avatarNotice.type === "error" ? "alert" : "status"}
                     className={`mx-6 mb-2 rounded-md px-3 py-2 text-sm ${
                         avatarNotice.type === "success"
-                            ? "bg-green-500/10 text-green-700 dark:text-green-300"
+                            ? "bg-success/10 text-success"
                             : "bg-destructive/10 text-destructive"
                     }`}
                 >
@@ -520,12 +520,12 @@ export default function Profile() {
                     </div>
                 </div>
                 {verifiedParam === "1" && (
-                    <p className="mb-2 rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">
+                    <p className="mb-2 rounded-md bg-success/10 px-3 py-2 text-sm text-success">
                         {t("Your email has been verified.")}
                     </p>
                 )}
                 {verifiedParam === "invalid" && (
-                    <p className="mb-2 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
+                    <p className="mb-2 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
                         {t("That verification link is invalid or has expired.")}
                     </p>
                 )}
@@ -639,7 +639,7 @@ export default function Profile() {
                             role={accountNotice.type === "error" ? "alert" : "status"}
                             className={
                                 accountNotice.type === "success"
-                                    ? "rounded-md bg-green-500/10 px-3 py-2 text-sm text-green-700 dark:text-green-300"
+                                    ? "rounded-md bg-success/10 px-3 py-2 text-sm text-success"
                                     : "rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive"
                             }
                         >
@@ -874,7 +874,7 @@ export default function Profile() {
                             <p
                                 className={
                                     notice.type === "success"
-                                        ? "rounded-md bg-green-500/10 px-3 py-2 text-sm text-green-700 dark:text-green-300"
+                                        ? "rounded-md bg-success/10 px-3 py-2 text-sm text-success"
                                         : "rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive"
                                 }
                             >

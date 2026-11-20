@@ -394,7 +394,7 @@ export default function ProductDetail() {
                                 />
                             </label>
                             {reviewError && <p role="alert" className="text-sm text-destructive">{reviewError}</p>}
-                            {reviewNotice && <p role="status" className="text-sm text-green-700 dark:text-green-400">{reviewNotice}</p>}
+                            {reviewNotice && <p role="status" className="text-sm text-success">{reviewNotice}</p>}
                             <Button type="submit" disabled={reviewSubmitting}>
                                 <Send aria-hidden="true" />
                                 {reviewSubmitting ? t("Submitting...") : t("Submit review")}
@@ -478,7 +478,7 @@ export default function ProductDetail() {
                                 />
                             </label>
                             {questionError && <p role="alert" className="text-sm text-destructive">{questionError}</p>}
-                            {questionNotice && <p role="status" className="text-sm text-green-700 dark:text-green-400">{questionNotice}</p>}
+                            {questionNotice && <p role="status" className="text-sm text-success">{questionNotice}</p>}
                             <Button type="submit" disabled={questionSubmitting}>
                                 <Send aria-hidden="true" />
                                 {questionSubmitting ? t("Sending...") : t("Send question")}

@@ -2,20 +2,20 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
     ArrowRight,
-    BookOpen,
     Check,
     ChevronLeft,
     ChevronRight,
     HeartHandshake,
     House,
+    Gift,
+    Palette,
     RefreshCw,
     ShieldCheck,
     ShoppingBag,
-    Smartphone,
     Sparkles,
     Star,
+    Shirt,
     Truck,
-    Watch,
 } from "lucide-react";
 import api from "@/api/axios";
 import {
@@ -29,48 +29,48 @@ import { t } from "@/i18n";
 
 const fallbackHeroSlides = [
     {
-        id: "wireless-headphones",
-        name: "Wireless Headphones",
-        category: "Electronics",
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=85",
+        id: "painted-saree",
+        name: "Alpona Cotton Saree",
+        category: "Hand Painted Wear",
+        image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1200&q=85",
         to: "/products",
     },
     {
-        id: "casual-sneakers",
-        name: "Casual Sneakers",
-        category: "Fashion & Apparel",
-        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=85",
+        id: "crochet-cardigan",
+        name: "Cloud Puff Stitch Cardigan",
+        category: "Crochet Wear",
+        image: "https://images.unsplash.com/photo-1610652492500-ded49ceeb378?auto=format&fit=crop&w=1200&q=85",
         to: "/products",
     },
     {
-        id: "smartphone",
-        name: "Smartphone",
-        category: "Gadgets & Accessories",
-        image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1200&q=85",
+        id: "canvas-tote",
+        name: "Krishnochura Painted Canvas Tote",
+        category: "Bags & Pouches",
+        image: "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=1200&q=85",
         to: "/products",
     },
     {
-        id: "wristwatch",
-        name: "Classic Wristwatch",
-        category: "Fashion & Apparel",
-        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=85",
+        id: "wall-hanging",
+        name: "Sunrise Arch Wall Hanging",
+        category: "Home Decor",
+        image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=85",
         to: "/products",
     },
     {
-        id: "home-kitchen",
-        name: "Home & Kitchen",
-        category: "Home & Kitchen",
-        image: "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=1200&q=85",
+        id: "amigurumi-bear",
+        name: "Momo the Crochet Bear",
+        category: "Accessories & Gifts",
+        image: "https://images.unsplash.com/photo-1559454403-b8fb88521f11?auto=format&fit=crop&w=1200&q=85",
         to: "/products",
     },
 ];
 
 const categoryIcons = [
-    { match: /electronic|gadget|tech/, icon: Smartphone },
-    { match: /fashion|apparel|accessor|beauty/, icon: Watch },
-    { match: /home|kitchen|furniture/, icon: House },
-    { match: /book|stationery|school/, icon: BookOpen },
-    { match: /sport|outdoor|fitness/, icon: HeartHandshake },
+    { match: /hand painted/, icon: Palette },
+    { match: /crochet wear/, icon: Shirt },
+    { match: /bag|pouch/, icon: ShoppingBag },
+    { match: /home|decor/, icon: House },
+    { match: /accessor|gift/, icon: Gift },
 ];
 
 const customerBenefits = [
@@ -291,7 +291,61 @@ export default function Home() {
     return (
         <div className="space-y-14 pb-8 sm:space-y-20">
             <section
-                className="relative isolate overflow-hidden rounded-[2rem] border border-orange-200/70 bg-gradient-to-br from-[#fffaf4] via-[#fff5e9] to-[#f8eadb] px-5 py-7 shadow-sm dark:border-border dark:from-background dark:via-secondary dark:to-background sm:px-9 sm:py-10 lg:px-12 lg:py-12"
+                className="relative isolate overflow-hidden rounded-[2rem] border border-border bg-foreground shadow-sm"
+                style={{
+                    backgroundImage: `url(${heroSlides[activeHeroSlide].image})`,
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
+                }}
+            >
+                <div className="absolute inset-0 bg-foreground/65" />
+                <div className="relative grid min-h-[30rem] items-end gap-8 p-6 text-background sm:p-10 lg:min-h-[34rem] lg:grid-cols-[1fr_auto] lg:p-14">
+                    <div className="max-w-xl self-center">
+                        <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-background/30 bg-background/15 px-3 py-1.5 text-xs font-semibold tracking-wide text-background backdrop-blur-sm">
+                            <Sparkles className="size-4" aria-hidden="true" />
+                            {t("Handmade for everyday living")}
+                        </p>
+                        <h1 className="max-w-xl text-4xl leading-[1.02] font-bold tracking-tight sm:text-6xl lg:text-7xl">
+                            {t("Discover what you'll love.")}
+                        </h1>
+                        <p className="mt-5 max-w-md text-base leading-relaxed text-background/80 sm:text-lg">
+                            {t("Hand painted clothes and crochet pieces made slowly, thoughtfully, and just for your everyday.")}
+                        </p>
+                        <Button asChild size="lg" className="mt-7 h-11 rounded-full px-6 text-sm">
+                            <Link to="/products" className="inline-flex items-center gap-2">
+                                {t("Shop now")}
+                                <ArrowRight className="size-4" aria-hidden="true" />
+                            </Link>
+                        </Button>
+                    </div>
+                    <div className="w-full max-w-sm self-end rounded-2xl border border-background/30 bg-background/90 p-4 text-foreground shadow-sm backdrop-blur-sm sm:p-5 lg:max-w-xs">
+                        <div className="flex items-start justify-between gap-4">
+                            <div>
+                                <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">{t("Made with care")}</p>
+                                <p className="mt-1 text-3xl font-bold tracking-tight">100%</p>
+                                <p className="text-sm text-muted-foreground">{t("handmade pieces")}</p>
+                            </div>
+                            <Check className="size-5 text-accent" aria-hidden="true" />
+                        </div>
+                        <div className="mt-4 grid grid-cols-2 gap-2">
+                            {[
+                                ["Best sellers", "/products?sort=best_selling"],
+                                ["New drops", "/products?sort=latest"],
+                                ["Highest rated", "/products?sort=rating"],
+                                ["Flash sale", "/products"],
+                            ].map(([label, href]) => (
+                                <Link key={label} to={href} className="flex items-center justify-between rounded-lg border border-border bg-secondary px-3 py-2 text-xs font-semibold transition-colors hover:bg-accent hover:text-accent-foreground">
+                                    {t(label)}
+                                    <ArrowRight className="size-3" aria-hidden="true" />
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section
+                className="relative isolate hidden overflow-hidden rounded-[2rem] border border-border bg-secondary px-4 py-5 shadow-sm sm:px-7 sm:py-7 lg:px-9 lg:py-9"
                 onMouseEnter={() => setHeroPaused(true)}
                 onMouseLeave={() => setHeroPaused(false)}
                 onFocus={() => setHeroPaused(true)}
@@ -301,24 +355,22 @@ export default function Home() {
                     }
                 }}
             >
-                <div className="pointer-events-none absolute -top-28 -right-16 -z-10 size-80 rounded-full bg-orange-300/20 blur-3xl dark:bg-primary/10" />
-                <div className="pointer-events-none absolute -bottom-36 left-1/4 -z-10 size-80 rounded-full bg-amber-200/30 blur-3xl dark:bg-primary/5" />
-                <div className="grid items-center gap-9 md:grid-cols-[1.02fr_0.98fr] lg:gap-12">
+                <div className="grid items-center gap-7 lg:grid-cols-[0.9fr_1.6fr] lg:gap-8">
                     <div className="max-w-xl py-1">
-                        <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-white/80 px-3.5 py-2 text-xs font-semibold tracking-wide text-primary shadow-sm dark:border-border dark:bg-card/80 sm:text-sm">
+                        <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-semibold tracking-wide text-primary shadow-sm sm:text-xs">
                             <Sparkles className="size-4" aria-hidden="true" />
                             {t("Good finds, all in one place")}
                         </p>
-                        <h1 className="max-w-lg text-4xl leading-[1.08] font-bold tracking-tight text-foreground sm:text-5xl lg:text-[3.5rem]">
-                            {t("Find your next favorite thing.")}
+                        <h1 className="max-w-lg text-4xl leading-[1.02] font-bold tracking-tight text-foreground sm:text-5xl lg:text-[3.25rem]">
+                            {t("Discover what you'll love.")}
                         </h1>
                         <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
-                            {t("Discover thoughtful picks for your home, your everyday, and everything in between.")}
+                            {t("Hand painted clothes and crochet pieces made slowly, thoughtfully, and just for your everyday.")}
                         </p>
                         <Button
                             asChild
                             size="lg"
-                            className="mt-7 h-12 rounded-full px-7 text-base shadow-lg shadow-primary/20 transition-transform hover:-translate-y-0.5"
+                            className="mt-6 h-11 rounded-full px-6 text-sm shadow-sm transition-transform hover:-translate-y-0.5"
                         >
                             <Link
                                 to="/products"
@@ -348,8 +400,8 @@ export default function Home() {
                             </span>
                         </div>
                     </div>
-                    <div className="mx-auto w-full max-w-lg">
-                        <div className="rounded-[1.75rem] border border-white/80 bg-white/80 p-2.5 shadow-2xl shadow-orange-950/10 backdrop-blur-sm dark:border-border dark:bg-card/80 sm:p-3">
+                    <div className="grid items-stretch gap-3 sm:grid-cols-[1.4fr_0.6fr]">
+                        <div className="rounded-[1.5rem] border border-border bg-card p-2 shadow-sm sm:p-2.5">
                             <div
                                 className="group relative overflow-hidden rounded-[1.3rem] bg-secondary"
                                 role="region"
@@ -367,7 +419,7 @@ export default function Home() {
                                             className="size-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none"
                                             fetchPriority="high"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+                                        <div className="absolute inset-0 bg-black/55" />
                                         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white sm:p-5">
                                             <div className="min-w-0">
                                                 <p className="mb-1 text-[11px] font-semibold tracking-[0.16em] text-white/75 uppercase">
@@ -459,8 +511,50 @@ export default function Home() {
                                 </Button>
                             </div>
                         </div>
+                        <aside className="flex flex-col justify-between gap-3 rounded-[1.5rem] border border-border bg-card p-4 shadow-sm sm:p-5">
+                            <div>
+                                <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                                    {t("Made with care")}
+                                </p>
+                                <p className="mt-2 text-3xl font-bold tracking-tight text-foreground">100%</p>
+                                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                                    {t("handmade pieces")}
+                                </p>
+                            </div>
+                            <div className="space-y-2 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-2">
+                                    <Check className="size-4 text-accent" aria-hidden="true" />
+                                    {t("Small-batch craft")}
+                                </span>
+                                <span className="flex items-center gap-2">
+                                    <ShieldCheck className="size-4 text-accent" aria-hidden="true" />
+                                    {t("Secure payments")}
+                                </span>
+                            </div>
+                            <Link to="/products" className="inline-flex items-center justify-between rounded-lg border border-border bg-secondary px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-accent hover:text-accent-foreground">
+                                {t("Shop collection")}
+                                <ArrowRight className="size-3.5" aria-hidden="true" />
+                            </Link>
+                        </aside>
                     </div>
                 </div>
+            </section>
+
+            <section className="grid gap-3 rounded-2xl border border-border bg-card px-4 py-4 text-sm sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+                {[
+                    [Truck, "Nationwide delivery", "Across Bangladesh"],
+                    [HeartHandshake, "Quality guarantee", "Made with care"],
+                    [ShieldCheck, "Secure payments", "Protected checkout"],
+                    [Sparkles, "Made to order", "Small-batch pieces"],
+                ].map(([Icon, title, description]) => (
+                    <div key={title} className="flex items-center gap-3">
+                        <Icon className="size-5 shrink-0 text-accent" aria-hidden="true" />
+                        <div>
+                            <p className="text-xs font-semibold text-foreground">{t(title)}</p>
+                            <p className="text-xs text-muted-foreground">{t(description)}</p>
+                        </div>
+                    </div>
+                ))}
             </section>
 
             <section aria-labelledby="categories-heading">
@@ -560,7 +654,7 @@ export default function Home() {
 
             <section
                 aria-labelledby="deals-heading"
-                className="overflow-hidden rounded-3xl border border-border bg-gradient-to-r from-orange-100 via-orange-50 to-amber-100 p-6 dark:from-background dark:via-secondary dark:to-background sm:p-9"
+                className="overflow-hidden rounded-3xl border border-border bg-secondary p-6 sm:p-9"
             >
                 <div className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
                     <div className="max-w-2xl">

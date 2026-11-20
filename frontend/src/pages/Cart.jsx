@@ -515,7 +515,7 @@ export default function Cart() {
                             <span>{formatPrice(deliveryCharge)}</span>
                         </div>
                         {discountAmount > 0 && (
-                            <div className="flex justify-between text-green-700 dark:text-green-400">
+                            <div className="flex justify-between text-success">
                                 <span>{t("Discount")}</span>
                                 <span>-{formatPrice(discountAmount)}</span>
                             </div>

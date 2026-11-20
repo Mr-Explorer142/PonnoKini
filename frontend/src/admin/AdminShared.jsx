@@ -42,7 +42,7 @@ function TimedNotice({ children, variant }) {
             className={`flex items-start justify-between gap-3 rounded-lg border px-4 py-3 text-sm ${
                 variant === "error"
                     ? "border-destructive/30 bg-destructive/10 text-destructive"
-                    : "border-green-600/20 bg-green-600/10 text-green-700 dark:text-green-400"
+                    : "border-success/20 bg-success/10 text-success"
             }`}
         >
             <span>{children}</span>

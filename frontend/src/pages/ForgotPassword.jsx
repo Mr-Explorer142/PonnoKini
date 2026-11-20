@@ -40,7 +40,7 @@ export default function ForgotPassword() {
     };
 
     return (
-        <Card className="mx-auto mt-10 w-full max-w-md border-orange-200">
+        <Card className="mx-auto mt-10 w-full max-w-md border-border">
             <CardHeader>
                 <CardTitle className="text-2xl">{t("Forgot password?")}</CardTitle>
                 <CardDescription>
@@ -68,7 +68,7 @@ export default function ForgotPassword() {
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {error && (
-                            <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
+                            <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
                                 {t(error)}
                             </p>
                         )}

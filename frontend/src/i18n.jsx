@@ -451,16 +451,11 @@ const translations = new Map([
     ["This is already your current email address.", "এটি ইতোমধ্যে আপনার বর্তমান ইমেইল ঠিকানা।"],
     ["The current password is incorrect.", "বর্তমান পাসওয়ার্ডটি সঠিক নয়।"],
     ["Invalid credentials provided!", "লগইন তথ্য সঠিক নয়!"],
-    ["Electronics", "ইলেকট্রনিক্স"],
-    ["Fashion & Apparel", "ফ্যাশন ও পোশাক"],
-    ["Home & Kitchen", "ঘর ও রান্নাঘর"],
-    ["Books & Stationery", "বই ও স্টেশনারি"],
-    ["Sports & Outdoors", "খেলাধুলা ও আউটডোর"],
-    ["Beauty & Personal Care", "সৌন্দর্য ও ব্যক্তিগত যত্ন"],
-    ["Toys & Games", "খেলনা ও গেম"],
-    ["Automotive", "অটোমোটিভ"],
-    ["Health & Wellness", "স্বাস্থ্য ও সুস্থতা"],
-    ["Gadgets & Accessories", "গ্যাজেট ও আনুষঙ্গিক"],
+    ["Hand Painted Wear", "হাতে আঁকা পোশাক"],
+    ["Crochet Wear", "ক্রোশে পোশাক"],
+    ["Bags & Pouches", "ব্যাগ ও পাউচ"],
+    ["Home Decor", "ঘর সাজানোর সামগ্রী"],
+    ["Accessories & Gifts", "অ্যাক্সেসরিজ ও উপহার"],
 ]);
 
 const getSavedLanguage = () => {

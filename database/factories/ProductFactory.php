@@ -17,16 +17,11 @@ class ProductFactory extends Factory
      * Keys must match the names in CategoryFactory exactly.
      */
     private const CATALOG = [
-        'Electronics' => ['Wireless Mouse', 'Bluetooth Speaker', 'Smart LED TV', 'HDMI Cable', 'Mechanical Keyboard', 'Noise Cancelling Headphones', 'HD Webcam', 'Power Bank'],
-        'Fashion & Apparel' => ['Cotton T-Shirt', 'Denim Jeans', 'Leather Belt', 'Hooded Sweatshirt', 'Casual Sneakers', 'Silk Scarf', 'Formal Shirt', 'Canvas Backpack'],
-        'Home & Kitchen' => ['Non-stick Frying Pan', 'Electric Kettle', 'Knife Set', 'Storage Containers', 'Bed Sheet Set', 'Rice Cooker', 'Blender', 'Dinner Plate Set'],
-        'Books & Stationery' => ['Spiral Notebook', 'Gel Pen Pack', 'Hardcover Journal', 'Desk Organizer', 'Highlighter Set', 'Sketchbook', 'Stapler', 'Sticky Notes'],
-        'Sports & Outdoors' => ['Yoga Mat', 'Football', 'Camping Tent', 'Water Bottle', 'Cricket Bat', 'Jump Rope', 'Running Shoes', 'Dumbbell Set'],
-        'Beauty & Personal Care' => ['Face Moisturizer', 'Shampoo', 'Hair Dryer', 'Lip Balm', 'Sunscreen Lotion', 'Perfume', 'Beard Trimmer', 'Body Wash'],
-        'Toys & Games' => ['Building Blocks', 'Board Game', 'Remote Control Car', 'Puzzle Set', 'Plush Teddy Bear', 'Card Game', 'Action Figure', 'Art & Craft Kit'],
-        'Automotive' => ['Car Phone Holder', 'Seat Cover', 'Engine Oil', 'Tyre Inflator', 'Dash Camera', 'Car Vacuum Cleaner', 'Floor Mats', 'Jump Starter'],
-        'Health & Wellness' => ['Digital Thermometer', 'Vitamin C Tablets', 'Blood Pressure Monitor', 'Herbal Tea', 'Massage Gun', 'First Aid Kit', 'Protein Powder', 'Yoga Block'],
-        'Gadgets & Accessories' => ['Phone Case', 'Screen Protector', 'USB-C Charger', 'Smart Watch', 'Wireless Earbuds', 'Laptop Stand', 'Phone Tripod', 'Mouse Pad'],
+        'Hand Painted Wear' => ['Cotton Saree', 'Khadi Kurti', 'Painted T-Shirt', 'Cotton Dupatta', 'Khadi Panjabi'],
+        'Crochet Wear' => ['Crochet Top', 'Crochet Cardigan', 'Crochet Shawl', 'Crochet Sweater'],
+        'Bags & Pouches' => ['Painted Tote Bag', 'Crochet Shoulder Bag', 'Canvas Pouch', 'Crochet Market Bag'],
+        'Home Decor' => ['Crochet Coaster Set', 'Wall Hanging', 'Table Runner', 'Cushion Cover'],
+        'Accessories & Gifts' => ['Crochet Hair Clips', 'Yarn Keychain', 'Crochet Scrunchie', 'Amigurumi Toy'],
     ];
 
     private const VARIANTS = ['', '', 'Pro', 'Mini', 'Plus', 'Lite'];

@@ -226,7 +226,7 @@ export default function Orders() {
                                     <span>{formatPrice(order.delivery_charge)}</span>
                                 </div>
                                 {Number(order.discount_amount) > 0 && (
-                                    <div className="flex justify-between gap-4 text-sm text-green-700 dark:text-green-400">
+                                    <div className="flex justify-between gap-4 text-sm text-success">
                                         <span>{t("Discount")}</span>
                                         <span>-{formatPrice(order.discount_amount)}</span>
                                     </div>

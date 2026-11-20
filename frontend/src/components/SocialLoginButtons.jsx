@@ -31,7 +31,7 @@ export default function SocialLoginButtons() {
 
             <Button
                 type="button"
-                className="cursor-pointer w-full bg-zinc-900 text-white hover:bg-zinc-800"
+                className="w-full cursor-pointer bg-foreground text-background hover:bg-foreground/90"
                 onClick={() => handleSocialLogin("github")}
             >
                 <FaGithub />

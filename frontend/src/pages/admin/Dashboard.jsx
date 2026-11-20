@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
-import { AlertCircle, RefreshCw, TrendingDown, TrendingUp } from "lucide-react";
+import {
+    AlertCircle,
+    Banknote,
+    ClipboardList,
+    PackageCheck,
+    PackageX,
+    RefreshCw,
+    ShoppingBag,
+    TrendingDown,
+    TrendingUp,
+    UserPlus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Chart from "@/components/charts/Chart";
 import { dashboardStats } from "@/api/adminStats";
@@ -15,39 +26,46 @@ const ranges = [7, 30, 90];
 const statKeys = Object.keys(dashboardStats);
 const statTones = {
     emerald: {
-        card: "border-emerald-500/25 bg-gradient-to-br from-emerald-500/15 via-emerald-500/5 to-card",
-        label: "text-emerald-800 dark:text-emerald-300",
-        value: "text-emerald-950 dark:text-emerald-200",
+        card: "border-accent/30 bg-secondary",
+        accent: "border-t-accent",
+        label: "text-muted-foreground",
+        value: "text-foreground",
     },
     blue: {
-        card: "border-blue-500/25 bg-gradient-to-br from-blue-500/15 via-blue-500/5 to-card",
-        label: "text-blue-800 dark:text-blue-300",
-        value: "text-blue-950 dark:text-blue-200",
+        card: "border-primary/25 bg-primary/5",
+        accent: "border-t-primary",
+        label: "text-muted-foreground",
+        value: "text-foreground",
     },
     violet: {
-        card: "border-violet-500/25 bg-gradient-to-br from-violet-500/15 via-violet-500/5 to-card",
-        label: "text-violet-800 dark:text-violet-300",
-        value: "text-violet-950 dark:text-violet-200",
+        card: "border-accent/30 bg-secondary",
+        accent: "border-t-accent",
+        label: "text-muted-foreground",
+        value: "text-foreground",
     },
     cyan: {
-        card: "border-cyan-500/25 bg-gradient-to-br from-cyan-500/15 via-cyan-500/5 to-card",
-        label: "text-cyan-800 dark:text-cyan-300",
-        value: "text-cyan-950 dark:text-cyan-200",
+        card: "border-accent/30 bg-secondary",
+        accent: "border-t-accent",
+        label: "text-muted-foreground",
+        value: "text-foreground",
     },
     orange: {
-        card: "border-orange-500/25 bg-gradient-to-br from-orange-500/15 via-orange-500/5 to-card",
-        label: "text-orange-800 dark:text-orange-300",
-        value: "text-orange-950 dark:text-orange-200",
+        card: "border-primary/30 bg-primary/5",
+        accent: "border-t-primary",
+        label: "text-primary",
+        value: "text-foreground",
     },
     yellow: {
-        card: "border-yellow-500/25 bg-gradient-to-br from-yellow-500/15 via-yellow-500/5 to-card",
-        label: "text-yellow-800 dark:text-yellow-300",
-        value: "text-yellow-950 dark:text-yellow-200",
+        card: "border-warning/30 bg-warning/5",
+        accent: "border-t-warning",
+        label: "text-muted-foreground",
+        value: "text-foreground",
     },
     red: {
-        card: "border-red-500/25 bg-gradient-to-br from-red-500/15 via-red-500/5 to-card",
-        label: "text-red-800 dark:text-red-300",
-        value: "text-red-950 dark:text-red-200",
+        card: "border-destructive/30 bg-destructive/5",
+        accent: "border-t-destructive",
+        label: "text-destructive",
+        value: "text-foreground",
     },
 };
 
@@ -105,9 +123,9 @@ function ChangeBadge({ value }) {
     const isNegative = value < 0;
     const Icon = isPositive ? TrendingUp : TrendingDown;
     const style = isPositive
-        ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
+        ? "bg-secondary text-accent"
         : isNegative
-          ? "bg-red-500/10 text-red-700 dark:text-red-400"
+          ? "bg-destructive/10 text-destructive"
           : "bg-muted text-muted-foreground";
 
     return (
@@ -123,12 +141,17 @@ function ChangeBadge({ value }) {
     );
 }
 
-function MetricCard({ title, metric, money = false, tone }) {
+function MetricCard({ title, metric, money = false, tone, icon: Icon }) {
     return (
         <article
-            className={`min-w-0 rounded-xl border p-5 transition-shadow hover:shadow-md ${tone.card}`}
+            className={`min-w-0 rounded-xl border border-t-4 p-5 transition-shadow hover:shadow-md ${tone.card} ${tone.accent}`}
         >
-            <p className={`text-sm font-medium ${tone.label}`}>{title}</p>
+            <div className="flex items-center justify-between gap-3">
+                <p className={`text-sm font-medium ${tone.label}`}>{title}</p>
+                <span className={`flex size-9 items-center justify-center rounded-lg bg-card/70 ${tone.label}`}>
+                    <Icon className="size-4" aria-hidden="true" />
+                </span>
+            </div>
             <div className="mt-3 flex flex-wrap items-end justify-between gap-3">
                 <p className={`text-2xl font-bold tracking-tight ${tone.value}`}>
                     {money
@@ -141,12 +164,17 @@ function MetricCard({ title, metric, money = false, tone }) {
     );
 }
 
-function CountCard({ title, value, tone }) {
+function CountCard({ title, value, tone, icon: Icon }) {
     return (
         <article
-            className={`min-w-0 rounded-xl border p-5 transition-shadow hover:shadow-md ${tone.card}`}
+            className={`min-w-0 rounded-xl border border-t-4 p-5 transition-shadow hover:shadow-md ${tone.card} ${tone.accent}`}
         >
-            <p className={`text-sm font-medium ${tone.label}`}>{title}</p>
+            <div className="flex items-center justify-between gap-3">
+                <p className={`text-sm font-medium ${tone.label}`}>{title}</p>
+                <span className={`flex size-9 items-center justify-center rounded-lg bg-card/70 ${tone.label}`}>
+                    <Icon className="size-4" aria-hidden="true" />
+                </span>
+            </div>
             <p
                 className={`mt-3 text-2xl font-bold tracking-tight ${
                     value > 0 ? tone.value : "text-foreground"
@@ -326,37 +354,44 @@ export default function Dashboard() {
                             metric={summary.data.revenue}
                             money
                             tone={statTones.emerald}
+                            icon={Banknote}
                         />
                         <MetricCard
                             title="Orders"
                             metric={summary.data.orders}
                             tone={statTones.blue}
+                            icon={ShoppingBag}
                         />
                         <MetricCard
                             title="Average order value"
                             metric={summary.data.average_order_value}
                             money
                             tone={statTones.violet}
+                            icon={Banknote}
                         />
                         <MetricCard
                             title="New customers"
                             metric={summary.data.new_customers}
                             tone={statTones.cyan}
+                            icon={UserPlus}
                         />
                         <CountCard
                             title="Orders to process"
                             value={summary.data.orders_to_process}
                             tone={statTones.orange}
+                            icon={ClipboardList}
                         />
                         <CountCard
                             title="Low-stock products"
                             value={summary.data.low_stock_products}
                             tone={statTones.yellow}
+                            icon={PackageCheck}
                         />
                         <CountCard
                             title="Out-of-stock products"
                             value={summary.data.out_of_stock_products}
                             tone={statTones.red}
+                            icon={PackageX}
                         />
                     </>
                 )}

@@ -61,7 +61,7 @@ export default function Login() {
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {resetSuccess && (
-                        <p className="rounded-md bg-green-500/10 px-3 py-2 text-sm text-green-700 dark:text-green-400">
+                        <p className="rounded-md bg-success/10 px-3 py-2 text-sm text-success">
                             {t("Password reset successfully. Please sign in with your new password.")}
                         </p>
                     )}

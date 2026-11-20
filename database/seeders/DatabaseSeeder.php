@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
-use App\Models\Product;
 use App\Models\User;
 use Database\Factories\BangladeshAddressFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -49,9 +47,10 @@ class DatabaseSeeder extends Seeder
             $customer->assignRole($customerRole);
         }
 
-        // 3. Seeding data
-        Category::factory()->count(5)->create()->each(function ($category) {
-            Product::factory()->count(10)->forCategory($category)->create();
-        });
+        // 3. Seed the handmade catalog after users and roles.
+        $this->call([
+            CategorySeeder::class,
+            ProductSeeder::class,
+        ]);
     }
 }
