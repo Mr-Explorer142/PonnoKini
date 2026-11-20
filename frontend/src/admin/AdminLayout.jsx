@@ -17,6 +17,7 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar";
+import Logo from "@/components/Logo";
 import { useAuthStore } from "@/store/useAuthStore";
 import api from "@/api/axios";
 import { playNotificationSound } from "@/lib/notificationSound";
@@ -108,10 +109,8 @@ export default function AdminLayout() {
             <aside className="border-b border-border bg-card lg:sticky lg:top-0 lg:h-screen lg:w-64 lg:shrink-0 lg:border-r lg:border-b-0">
                 <div className="flex items-center justify-between px-5 py-5 lg:block">
                     <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                            PonnoKini
-                        </p>
-                        <h1 className="mt-1 text-lg font-bold">
+                        <Logo className="h-8 w-auto" />
+                        <h1 className="mt-2 text-lg font-bold">
                             Admin workspace
                         </h1>
                         <div className="mt-3 flex items-center gap-2 lg:hidden">

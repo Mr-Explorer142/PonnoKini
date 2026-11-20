@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ShoppingBag } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Logo from "@/components/Logo";
 import { t } from "@/i18n";
 
 const shopLinks = [
@@ -39,10 +40,9 @@ export default function Footer() {
                 <div className="max-w-sm">
                     <Link
                         to="/"
-                        className="inline-flex items-center gap-2 text-xl font-bold text-primary"
+                        className="inline-flex items-center"
                     >
-                        <ShoppingBag className="size-5" aria-hidden="true" />
-                        PonnoKini
+                        <Logo className="h-10 w-auto" />
                     </Link>
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                         {t("Thoughtful finds for your home, your everyday, and everything in between.")}

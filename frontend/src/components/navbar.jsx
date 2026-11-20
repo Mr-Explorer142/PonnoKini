@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import NotificationBell from "@/components/NotificationBell";
+import Logo from "@/components/Logo";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useCartStore } from "@/store/useCartStore";
 import { t } from "@/i18n";
@@ -166,9 +167,8 @@ export default function Navbar({ theme, onToggleTheme }) {
     return (
         <header className="border-b border-border bg-background shadow-sm">
             <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-y-3 px-4 py-3 sm:px-6 lg:flex-nowrap lg:px-8">
-                <Link to="/" className="text-xl font-bold text-primary inline-flex items-center gap-2">
-                    <ShoppingBag className="size-5" aria-hidden="true" />
-                    PonnoKini
+                <Link to="/" className="inline-flex items-center">
+                    <Logo className="h-9 w-auto" />
                 </Link>
 
                 {catalogSearch && (
@@ -356,10 +356,10 @@ export default function Navbar({ theme, onToggleTheme }) {
                         <div className="flex items-center justify-between border-b border-border pb-4">
                             <Link
                                 to="/"
-                                className="text-xl font-bold text-primary"
+                                className="inline-flex items-center"
                                 onClick={() => setMenuOpen(false)}
                             >
-                                PonnoKini
+                                <Logo className="h-8 w-auto" />
                             </Link>
                             <Button
                                 ref={closeButtonRef}
