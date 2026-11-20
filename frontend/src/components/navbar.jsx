@@ -97,6 +97,10 @@ export default function Navbar({ theme, onToggleTheme }) {
     const [searchParams, setSearchParams] = useSearchParams();
     const catalogSearch = location.pathname === "/products";
     const catalogQuery = searchParams.get("search") ?? "";
+    const isCatalogPage =
+        location.pathname === "/products" || location.pathname.startsWith("/products/");
+    const isLoginPage = location.pathname === "/login";
+    const isRegisterPage = location.pathname === "/register";
     const [menuOpen, setMenuOpen] = useState(false);
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
     const menuButtonRef = useRef(null);
@@ -376,7 +380,7 @@ export default function Navbar({ theme, onToggleTheme }) {
                         <div className="flex flex-col items-stretch gap-2">
                             <Button
                                 asChild
-                                variant="ghost"
+                                variant={isCatalogPage ? "default" : "ghost"}
                                 className="justify-start"
                             >
                                 <Link
@@ -474,7 +478,7 @@ export default function Navbar({ theme, onToggleTheme }) {
                                 <>
                                     <Button
                                         asChild
-                                        variant="ghost"
+                                        variant={isLoginPage ? "default" : "ghost"}
                                         className="justify-start"
                                     >
                                         <Link
@@ -484,7 +488,11 @@ export default function Navbar({ theme, onToggleTheme }) {
                                             {t("Log in")}
                                         </Link>
                                     </Button>
-                                    <Button asChild className="justify-start">
+                                    <Button
+                                        asChild
+                                        variant={isRegisterPage ? "default" : "ghost"}
+                                        className="justify-start"
+                                    >
                                         <Link
                                             to="/register"
                                             onClick={() => setMenuOpen(false)}
